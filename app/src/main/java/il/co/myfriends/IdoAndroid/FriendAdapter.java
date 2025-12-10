@@ -18,11 +18,23 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
     private Context context;
     private Friends friends;
     private int single_layout;
+    public interface OnItemClickListener {
+        public void onItemClick(Friend friend);
+    }
+    public interface OnItemLongClickListener {
+        public boolean onItemLongClick(Friend friend);
+    }
+    private OnItemClickListener listener;
+    private OnItemLongClickListener longlistener;
 
-    public FriendAdapter(Context context, Friends friends, int single_layout) {
+    public FriendAdapter(Context context, Friends friends, int single_layout,
+                         OnItemClickListener listener,
+                         OnItemLongClickListener longlistener) {
         this.context = context;
         this.friends = friends;
         this.single_layout = single_layout;
+        this.listener = listener;
+        this.longlistener = longlistener;
     }
 
     @NonNull
@@ -36,7 +48,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
         Friend friend = friends.get(position);
         if (friend != null) {
-            holder.bind(friend);
+            holder.bind(friend,listener,longlistener);
         }
     }
 
@@ -58,10 +70,24 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
             tvLastName = itemView.findViewById(R.id.tvLastName);
         }
 
-        public void bind(Friend friend) {
+        public void bind(Friend friend,
+                         OnItemClickListener listener,
+                         OnItemLongClickListener longlistener) {
             tvFirstName.setText(friend.getName());
             tvLastName.setText(friend.getFamily());
             ivFriend.setImageResource(R.drawable.sunglassemoji);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(friend);
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return longlistener.onItemLongClick(friend);
+                }
+            });
         }
     }
 }

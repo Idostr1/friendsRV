@@ -1,6 +1,7 @@
 package il.co.myfriends.IdoAndroid;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +47,21 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        adapter = new FriendAdapter(this, friends, R.layout.friend_single_layout);
+        FriendAdapter.OnItemClickListener listener = new FriendAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Friend friend) {
+                Toast.makeText(SecondActivity.this, friend.getName(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        FriendAdapter.OnItemLongClickListener longlistener = new FriendAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(Friend friend) {
+                Toast.makeText(SecondActivity.this, friend.getFamily(), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        };
+
+        adapter = new FriendAdapter(this, friends, R.layout.friend_single_layout,listener, longlistener);
         rvFriends.setAdapter(adapter);
         rvFriends.setLayoutManager(new LinearLayoutManager(this));
     }
