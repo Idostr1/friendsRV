@@ -30,16 +30,21 @@ public class SecondActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         initializeViews();
-        friends= new Friends();
-        friends.add(new Friend("Cohen", "Avi","sunglassemoji",20001003,"Friend"));
-        friends.add(new Friend("Shmuel", "Yahakov","sunglassemoji",622010,"Friend"));
+        initializeData();
         setRecyclerView();
+    }
+
+    private void initializeData() {
+        friends = new Friends();
+        friends.getAllFriends();
     }
 
     private void initializeViews() {
         rvFriends = findViewById(R.id.rvFriends);
     }
+
     private void setRecyclerView() {
         adapter = new FriendAdapter(this, friends, R.layout.friend_single_layout);
         rvFriends.setAdapter(adapter);

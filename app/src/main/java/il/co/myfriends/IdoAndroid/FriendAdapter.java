@@ -49,8 +49,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         private ImageView ivFriend;
         private TextView tvFirstName;
         private TextView tvLastName;
-        private TextView tvBirthDate;
-        private TextView tvCategory;
 
         public FriendViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,16 +56,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
             ivFriend = itemView.findViewById(R.id.ivFriend);
             tvFirstName = itemView.findViewById(R.id.tvFirstName);
             tvLastName = itemView.findViewById(R.id.tvLastName);
-            tvBirthDate = itemView.findViewById(R.id.tvBirthDate);
-            tvCategory = itemView.findViewById(R.id.tvCategory);
         }
 
         public void bind(Friend friend) {
             tvFirstName.setText(friend.getName());
             tvLastName.setText(friend.getFamily());
-            tvBirthDate.setText(String.valueOf(friend.getBirthDate()));
-            tvCategory.setText(friend.getCategory());
-            ivFriend.setImageResource(friend.getPicture());
+            ivFriend.setImageResource(R.drawable.sunglassemoji);
         }
     }
 }
