@@ -11,8 +11,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Date;
-
 import il.co.myfriends.model.Friend;
 import il.co.myfriends.model.Friends;
 
@@ -43,7 +41,7 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        rvFriends = findViewById(R.id.rvFriends);
+        rvFriends = findViewById(R.id.rvCategories);
     }
 
     private void setRecyclerView() {

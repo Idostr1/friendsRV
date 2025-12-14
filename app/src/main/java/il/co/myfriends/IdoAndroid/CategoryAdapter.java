@@ -10,28 +10,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import il.co.myfriends.model.Friend;
-import il.co.myfriends.model.Friends;
+import il.co.myfriends.model.Categories;
+import il.co.myfriends.model.Category;
 
-public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder> {
+
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private Context context;
-    private Friends friends;
+    private Categories Categories;
     private int single_layout;
     public interface OnItemClickListener {
-        public void onItemClick(Friend friend);
+        public void onItemClick(Category Category);
     }
     public interface OnItemLongClickListener {
-        public boolean onItemLongClick(Friend friend);
+        public boolean onItemLongClick(Category Category);
     }
     private OnItemClickListener listener;
     private OnItemLongClickListener longlistener;
 
-    public FriendAdapter(Context context, Friends friends, int single_layout,
+    public CategoryAdapter(Context context, Categories Categories, int single_layout,
                          OnItemClickListener listener,
                          OnItemLongClickListener longlistener) {
         this.context = context;
-        this.friends = friends;
+        this.Categories = Categories;
         this.single_layout = single_layout;
         this.listener = listener;
         this.longlistener = longlistener;
@@ -39,53 +40,50 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 
     @NonNull
     @Override
-    public FriendViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(single_layout, parent, false);
-        return new FriendViewHolder(view);
+        return new CategoryViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
-        Friend friend = friends.get(position);
-        if (friend != null) {
-            holder.bind(friend,listener,longlistener);
+    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+        Category Category = Categories.get(position);
+        if (Category != null) {
+            holder.bind(Category,listener,longlistener);
         }
     }
 
     @Override
     public int getItemCount() {
-        return (friends != null) ? friends.size() : 0;
+        return (Categories != null) ? Categories.size() : 0;
     }
 
-    public static class FriendViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivFriend;
-        private TextView tvFirstName;
-        private TextView tvLastName;
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        private ImageView ivCategory;
+        private TextView tvCategoryName;
 
-        public FriendViewHolder(@NonNull View itemView) {
+        public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ivFriend = itemView.findViewById(R.id.ivCategory);
-            tvFirstName = itemView.findViewById(R.id.tvName);
-            tvLastName = itemView.findViewById(R.id.tvLastName);
+            ivCategory = itemView.findViewById(R.id.ivCategory);
+            tvCategoryName = itemView.findViewById(R.id.tvName);
         }
 
-        public void bind(Friend friend,
+        public void bind(Category Category,
                          OnItemClickListener listener,
                          OnItemLongClickListener longlistener) {
-            tvFirstName.setText(friend.getName());
-            tvLastName.setText(friend.getFamily());
-            ivFriend.setImageResource(R.drawable.sunglassemoji);
+            tvCategoryName.setText(Category.getName());;;
+            ivCategory.setImageResource(R.drawable.sunglassemoji);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(friend);
+                    listener.onItemClick(Category);
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return longlistener.onItemLongClick(friend);
+                    return longlistener.onItemLongClick(Category);
                 }
             });
         }

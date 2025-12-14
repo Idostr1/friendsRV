@@ -25,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return true;
         }
+        else if(id== R.id.mnuCategory){
+            Intent intent = new Intent(this, CategoryActivity.class);
+            startActivity(intent);
+            return true;
+        }
         else{
             Intent intent = new Intent(this, SecondActivity.class);
             startActivity(intent);

@@ -7,6 +7,9 @@
         android:title="My friends" />
 
     <item
+        android:id="@+id/mnuCategory"
+        android:title="Categories" />
+    <item
         android:id="@+id/mnuCloseApp"
         android:title="Close app" />
 </menu>
