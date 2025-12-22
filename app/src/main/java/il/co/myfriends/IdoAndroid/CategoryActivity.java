@@ -1,15 +1,19 @@
     package il.co.myfriends.IdoAndroid;
 
     import android.os.Bundle;
+    import android.widget.EditText;
     import android.widget.Toast;
 
     import androidx.activity.EdgeToEdge;
+    import androidx.appcompat.app.AlertDialog;
     import androidx.appcompat.app.AppCompatActivity;
     import androidx.core.graphics.Insets;
     import androidx.core.view.ViewCompat;
     import androidx.core.view.WindowInsetsCompat;
     import androidx.recyclerview.widget.LinearLayoutManager;
     import androidx.recyclerview.widget.RecyclerView;
+
+    import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
     import il.co.myfriends.model.Category;
     import il.co.myfriends.model.Categories;
@@ -18,6 +22,8 @@
         private RecyclerView rvCategories;
         private Categories Categories;
         private CategoryAdapter adapter;
+        private FloatingActionButton fabAddCategory;
+
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,7 @@
             initializeViews();
             initializeData();
             setRecyclerView();
+            setListeners();
         }
 
         private void initializeData() {
@@ -42,19 +49,32 @@
 
         private void initializeViews() {
             rvCategories = findViewById(R.id.rvCategories);
+            fabAddCategory = findViewById(R.id.fabAddCategory);
         }
 
         private void setRecyclerView() {
             CategoryAdapter.OnItemClickListener listener = new CategoryAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Category Category) {
-                    Toast.makeText(CategoryActivity.this, Category.getName(), Toast.LENGTH_SHORT).show();
+                    final EditText input = new EditText(CategoryActivity.this);
+                    input.setText(Category.getName());
+
+                    new AlertDialog.Builder(CategoryActivity.this)
+                            .setTitle("Edit category")
+                            .setView(input)
+                            .setPositiveButton("Save", (dialog, which) -> {
+                                Category.setName(input.getText().toString());
+                                adapter.notifyItemChanged(Categories.indexOf(Category));
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
                 }
             };
             CategoryAdapter.OnItemLongClickListener longlistener = new CategoryAdapter.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(Category Category) {
-                    Toast.makeText(CategoryActivity.this, Category.getName(), Toast.LENGTH_SHORT).show();
+                    adapter.notifyItemRemoved(Categories.indexOf(Category));
+                    Categories.remove(Category);
                     return true;
                 }
             };
@@ -62,5 +82,13 @@
             adapter = new CategoryAdapter(this, Categories, R.layout.category_single_layout,listener, longlistener);
             rvCategories.setAdapter(adapter);
             rvCategories.setLayoutManager(new LinearLayoutManager(this));
+        }
+        private void setListeners() {
+            fabAddCategory.setOnClickListener(v -> {
+                Category newCategory = new Category("New Category");
+                Categories.add(newCategory);
+                adapter.notifyItemInserted(Categories.size() - 1);
+                rvCategories.scrollToPosition(Categories.size() - 1);
+            });
         }
     }
