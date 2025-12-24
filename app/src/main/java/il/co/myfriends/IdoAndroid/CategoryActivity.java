@@ -85,10 +85,27 @@
         }
         private void setListeners() {
             fabAddCategory.setOnClickListener(v -> {
-                Category newCategory = new Category("New Category");
-                Categories.add(newCategory);
-                adapter.notifyItemInserted(Categories.size() - 1);
-                rvCategories.scrollToPosition(Categories.size() - 1);
+                final EditText input = new EditText(this);
+                input.setHint("Category name");
+
+                new AlertDialog.Builder(this)
+                        .setTitle("Add New Category")
+                        .setView(input)
+                        .setPositiveButton("Add", (dialog, which) -> {
+                            String categoryName = input.getText().toString().trim();
+
+                            if (!categoryName.isEmpty()) {
+                                Category newCategory = new Category(categoryName);
+                                Categories.add(newCategory);
+
+                                adapter.notifyItemInserted(Categories.size() - 1);
+                                rvCategories.scrollToPosition(Categories.size() - 1);
+                            } else {
+                                Toast.makeText(CategoryActivity.this, "Please enter a name", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
             });
         }
     }
